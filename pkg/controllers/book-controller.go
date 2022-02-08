@@ -10,14 +10,15 @@ import (
 	"strconv"
 )
 
-var NewBook models.Book
-
-func GetBook(writer http.ResponseWriter, request *http.Request) {
+func GetBooks(writer http.ResponseWriter, request *http.Request) {
 	newBooks := models.GetAllBooks()
 	res, _ := json.Marshal(newBooks)
 	writer.Header().Set("Content-Type", "pkglication/json")
 	writer.WriteHeader(http.StatusOK)
-	writer.Write(res)
+	_, err := writer.Write(res)
+	if err != nil {
+		return
+	}
 }
 
 func GetBookById(writer http.ResponseWriter, request *http.Request) {
@@ -32,7 +33,10 @@ func GetBookById(writer http.ResponseWriter, request *http.Request) {
 	res, _ := json.Marshal(bookDetails)
 	writer.Header().Set("Content-Type", "pkglication/json")
 	writer.WriteHeader(http.StatusOK)
-	writer.Write(res)
+	_, err = writer.Write(res)
+	if err != nil {
+		return
+	}
 }
 
 func CreateBook(writer http.ResponseWriter, request *http.Request) {
@@ -41,7 +45,10 @@ func CreateBook(writer http.ResponseWriter, request *http.Request) {
 	book := CreateBook.CreateBook()
 	res, _ := json.Marshal(book)
 	writer.WriteHeader(http.StatusOK)
-	writer.Write(res)
+	_, err := writer.Write(res)
+	if err != nil {
+		return
+	}
 }
 
 func DeleteBook(writer http.ResponseWriter, request *http.Request) {
@@ -56,7 +63,10 @@ func DeleteBook(writer http.ResponseWriter, request *http.Request) {
 	res, _ := json.Marshal(book)
 	writer.Header().Set("Content-Type", "pkglication/json")
 	writer.WriteHeader(http.StatusOK)
-	writer.Write(res)
+	_, err = writer.Write(res)
+	if err != nil {
+		return
+	}
 }
 
 func UpdateBook(writer http.ResponseWriter, request *http.Request) {
@@ -74,17 +84,24 @@ func UpdateBook(writer http.ResponseWriter, request *http.Request) {
 		bookDetails.Name = updateBook.Name
 	}
 
-	if updateBook.Author != "" {
-		bookDetails.Author = updateBook.Author
-	}
-
 	if updateBook.Publication != "" {
 		bookDetails.Publication = updateBook.Publication
+	}
+
+	if updateBook.AuthorId != 0 {
+		bookDetails.AuthorId = updateBook.AuthorId
+	}
+
+	if updateBook.BookTypeId != 0 {
+		bookDetails.BookTypeId = updateBook.BookTypeId
 	}
 
 	db.Save(&bookDetails)
 	res, _ := json.Marshal(bookDetails)
 	writer.Header().Set("Content-Type", "pkglication/json")
 	writer.WriteHeader(http.StatusOK)
-	writer.Write(res)
+	_, err = writer.Write(res)
+	if err != nil {
+		return
+	}
 }
