@@ -9,7 +9,7 @@ type Author struct {
 	gorm.Model
 	Name     string `json:"name"`
 	LastName string `json:"last_name"`
-	Books    []Book `gorm:"foreignKey:authorId, constraint:OnUpdate:CASCADE, OnDelete:SET NULL;" json:"books"`
+	Books    []Book `gorm:"constraint:OnUpdate:CASCADE, OnDelete:SET NULL;" json:"books"`
 }
 
 func init() {

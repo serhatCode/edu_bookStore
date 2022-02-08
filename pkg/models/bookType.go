@@ -8,7 +8,7 @@ import (
 type BookType struct {
 	gorm.Model
 	Name  string `json:"name"`
-	Books []Book `gorm:"foreignKey:bookTypeId, constraint:OnUpdate:CASCADE, OnDelete:SET NULL;" json:"books"`
+	Books []Book `gorm:"constraint:OnUpdate:CASCADE, OnDelete:SET NULL;" json:"books"`
 }
 
 func init() {
