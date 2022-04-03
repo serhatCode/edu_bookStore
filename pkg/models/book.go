@@ -22,7 +22,6 @@ func init() {
 }
 
 func (book *Book) CreateBook() *Book {
-	//db.NewRecord(book)
 	db.Create(&book)
 	return book
 }
